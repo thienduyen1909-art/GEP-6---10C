@@ -19,18 +19,9 @@
       color:var(--ink);
       padding:24px;
     }
-    .wrap{ max-width: 950px; margin: 0 auto; }
+    .wrap{ max-width: 980px; margin: 0 auto; }
     h1{ font-size: 22px; margin: 0 0 6px; }
     p{ margin: 0 0 16px; color: var(--muted); }
-
-    .grid{
-      display:grid;
-      grid-template-columns: 1fr;
-      gap:14px;
-    }
-    @media (min-width: 780px){
-      .grid{ grid-template-columns: 1.3fr 1fr; }
-    }
 
     .card{
       border:1px solid var(--line);
@@ -44,6 +35,7 @@
       flex-wrap:wrap;
       gap:8px;
       margin-top:8px;
+      margin-bottom: 12px;
     }
     .chip{
       background: var(--chip);
@@ -56,7 +48,7 @@
     table{
       width:100%;
       border-collapse: collapse;
-      margin-top: 10px;
+      margin-top: 6px;
     }
     th, td{
       border-top:1px solid var(--line);
@@ -103,15 +95,6 @@
       color: var(--muted);
       margin-top: 10px;
     }
-    .key{
-      display:none;
-      border-top:1px dashed var(--line);
-      margin-top:12px;
-      padding-top:12px;
-      font-size: 14px;
-    }
-    .key ul{ margin: 8px 0 0 18px; }
-    .key li{ margin: 3px 0; }
   </style>
 </head>
 
@@ -120,54 +103,33 @@
     <h1>Senses Verbs: Match the adjectives to the correct verb</h1>
     <p>Choose the best verb for each adjective: <strong>look / feel / seem / smell / sound</strong>.</p>
 
-    <div class="grid">
-      <!-- LEFT: TASK -->
-      <div class="card">
-        <h2 style="font-size:16px; margin:0 0 6px;">A. Adjectives (matching)</h2>
-        <div class="verbs" aria-label="Verb options">
-          <span class="chip">look</span>
-          <span class="chip">feel</span>
-          <span class="chip">seem</span>
-          <span class="chip">smell</span>
-          <span class="chip">sound</span>
-        </div>
+    <div class="card">
+      <h2 style="font-size:16px; margin:0 0 6px;">A. Adjectives (matching)</h2>
 
-        <table aria-label="Adjective matching table">
-          <thead>
-            <tr>
-              <th class="num">No.</th>
-              <th>Adjective</th>
-              <th>Verb</th>
-            </tr>
-          </thead>
-          <tbody id="rows"></tbody>
-        </table>
-
-        <div class="actions">
-          <button type="button" id="resetBtn">Reset</button>
-          <button type="button" id="showKeyBtn">Show answer key</button>
-          <button type="button" id="hideKeyBtn" style="display:none;">Hide answer key</button>
-        </div>
-
-        <div class="note">Tip: Some adjectives can work with more than one verb, but choose the most natural one for B1.</div>
+      <div class="verbs" aria-label="Verb options">
+        <span class="chip">look</span>
+        <span class="chip">feel</span>
+        <span class="chip">seem</span>
+        <span class="chip">smell</span>
+        <span class="chip">sound</span>
       </div>
 
-      <!-- RIGHT: ANSWER KEY -->
-      <div class="card">
-        <h2 style="font-size:16px; margin:0 0 6px;">Teacher area</h2>
-        <p style="margin:0; color:var(--muted);">Use this for quick checking.</p>
+      <table aria-label="Adjective matching table">
+        <thead>
+          <tr>
+            <th class="num">No.</th>
+            <th>Adjective</th>
+            <th>Verb</th>
+          </tr>
+        </thead>
+        <tbody id="rows"></tbody>
+      </table>
 
-        <div class="key" id="answerKey">
-          <strong>Answer key (suggested)</strong>
-          <ul>
-            <li><strong>look</strong>: shiny, blurry, colourful, crooked</li>
-            <li><strong>feel</strong>: smooth, rough, sticky, soft</li>
-            <li><strong>smell</strong>: fragrant, smoky, mouldy, spicy</li>
-            <li><strong>sound</strong>: noisy, echoing, whisper-quiet, melodic</li>
-            <li><strong>seem</strong>: nervous, confident, suspicious, exhausted</li>
-          </ul>
-        </div>
+      <div class="actions">
+        <button type="button" id="resetBtn">Reset</button>
       </div>
+
+      <div class="note">Tip: Choose the most natural verb for each adjective.</div>
     </div>
   </div>
 
@@ -196,7 +158,6 @@
     ];
 
     const verbs = ["", "look", "feel", "seem", "smell", "sound"];
-
     const tbody = document.getElementById("rows");
 
     function makeRow(i, adj){
@@ -212,12 +173,14 @@
       const tdSel = document.createElement("td");
       const sel = document.createElement("select");
       sel.name = `q${i+1}`;
+
       verbs.forEach(v => {
         const opt = document.createElement("option");
         opt.value = v;
         opt.textContent = v === "" ? "— choose —" : v;
         sel.appendChild(opt);
       });
+
       tdSel.appendChild(sel);
 
       tr.appendChild(tdNum);
@@ -234,26 +197,8 @@
 
     render();
 
-    // Buttons
-    const resetBtn = document.getElementById("resetBtn");
-    const showKeyBtn = document.getElementById("showKeyBtn");
-    const hideKeyBtn = document.getElementById("hideKeyBtn");
-    const answerKey = document.getElementById("answerKey");
-
-    resetBtn.addEventListener("click", () => {
+    document.getElementById("resetBtn").addEventListener("click", () => {
       document.querySelectorAll("select").forEach(s => s.value = "");
-    });
-
-    showKeyBtn.addEventListener("click", () => {
-      answerKey.style.display = "block";
-      showKeyBtn.style.display = "none";
-      hideKeyBtn.style.display = "inline-block";
-    });
-
-    hideKeyBtn.addEventListener("click", () => {
-      answerKey.style.display = "none";
-      showKeyBtn.style.display = "inline-block";
-      hideKeyBtn.style.display = "none";
     });
   </script>
 </body>
